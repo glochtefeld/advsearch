@@ -1,0 +1,26 @@
+{
+  "name": "advsearch",
+  "version": "1.0.0",
+  "description": "Pure javascript compiler for search terms to send to your backend.",
+  "main": "advsearch.min.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/glochtefeld/advsearch.git"
+  },
+  "keywords": [
+    "advanced",
+    "search",
+    "frontend",
+    "compiler",
+    "simple"
+  ],
+  "author": "Gavin Lochtefeld",
+  "license": "BSD-3-Clause",
+  "bugs": {
+    "url": "https://github.com/glochtefeld/advsearch/issues"
+  },
+  "homepage": "https://github.com/glochtefeld/advsearch#readme"
+}

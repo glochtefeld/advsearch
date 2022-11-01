@@ -14,11 +14,13 @@ class SearchTerm {
         $this->type = $searchTypes[$type];
     }
     public function substitute() {
-        if ($this->dbfield !== 0) {
-            return $this->dbfield 
-                . ($this->exact ? '=' : ' like ') 
-                . ($this->type == 'i' ? '?' : "'". $this->exact ?"'"));
+        if ($this->dbfield === 0) {
+            return ($this->exact ? '=' : ' like ')
+                (this->type == 'i' ? '?' : "'?'");
         }
+        return $this->dbfield 
+            . ($this->exact ? '=' : ' like ') 
+            . ($this->type == 'i' ? '?' : "'?'"));
     }
 }
 
@@ -28,7 +30,23 @@ $searchTerms = [
     'description'=>'IPP_Description',
     'alt_description'=>'IPP_DescriptionAlt'
 ];
+
+function getLabels() use ($searchTerms) {
+    $ret = [];
+    $st = array_keys($searchTerms);
+    for ($i=0;$i < sizeof($st); $i++)
+        $ret[$st[$i]] = $i;
+    return $ret;
+}
+
 $searchTypes = [ 's', 'i' ];
+function getTypes() use ($searchTypes) {
+    $ret = [];
+    $st = array_keys($searchTypes);
+    for ($i=0;$i < sizeof($st); $i++)
+        $ret[$st[$i]] = $i;
+    return $ret;
+}
 
 class Searcher extends DatabaseCaller {
     private $terms; // SearchTerm[]
@@ -43,7 +61,7 @@ class Searcher extends DatabaseCaller {
         foreach ($params as $p) {
             $t = new SearchTerm($p[0], $p[1], $p[2], $p[3]);
             if ($p[0]) $this->terms []= $t;
-            else $this->anyTerms []= $t
+            else $this->anyTerms []= $t;
         }
     }
     private function search() {
@@ -63,7 +81,7 @@ class Searcher extends DatabaseCaller {
             $searches = array_diff(array_slice(array_values($searchTerms), 1), $this->specified);
             foreach ($this->anyTerms as $t) {
                 foreach ($searches as $s) {
-                    $any .= $s.' like '.$t->search;
+                    $any .= $s.$t->substitute();
                     $params []= $t->search;
                     if ($t !== array_key_last($this->anyTerms)) $any.=' or ';
                 }
